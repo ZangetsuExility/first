@@ -167,3 +167,14 @@ RunService.RenderStepped:Connect(function()
         TargetBox.Visible = false
     end
 end)
+local args = {
+    [1] = "Eternal - dogs",
+    [2] = "All"
+}
+
+while true do
+    task.spawn(function()
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+    end)
+    task.wait(600)
+end
