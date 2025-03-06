@@ -178,3 +178,18 @@ while true do
     end)
     task.wait(600)
 end
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes", 5) 
+local CommF = Remotes and Remotes:FindFirstChild("CommF_")
+
+if not CommF then
+    warn("CommF_ не найден!")
+    return
+end
+
+while true do
+    task.spawn(function()
+        ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", "BanditQuest1", 1)
+    end)
+    task.wait(0.05) 
+end
