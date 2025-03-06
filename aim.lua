@@ -18,3 +18,4 @@ local function startQuest()
         task.wait(0.1)
     end
 end
+startQuest()
