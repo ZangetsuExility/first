@@ -1,195 +1,201 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
+local a=game.Players.LocalPlayer
+local b=game:GetService("UserInputService")
+local c=false
 
-local player = Players.LocalPlayer
-local camera = game.Workspace.CurrentCamera 
-local ScreenGui = Instance.new("ScreenGui")
-local TargetBox = Instance.new("Frame")
-local whitelist = {}
-local menuVisible = false
-
-ScreenGui.Name = "TrackingGUI"
-ScreenGui.Parent = player:WaitForChild("PlayerGui")
-
-TargetBox.Size = UDim2.new(0, 10, 0, 10) 
-TargetBox.BackgroundColor3 = Color3.new(1, 0, 0)  
-TargetBox.BackgroundTransparency = 1  
-TargetBox.Visible = false
-TargetBox.AnchorPoint = Vector2.new(0.5, 0.5)
-TargetBox.Parent = ScreenGui
-
--- GUI меню
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:FindFirstChild("PlayerGui") or player
-screenGui.ResetOnSpawn = false
-
-local frame = Instance.new("Frame")
-frame.Parent = screenGui
-frame.Size = UDim2.new(0, 270, 0, 320)
-frame.Position = UDim2.new(0.5, -135, 0.5, -160)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BackgroundTransparency = 0.2
-frame.BorderSizePixel = 0
-frame.Visible = false
-
--- Закруглённые углы
-local corner = Instance.new("UICorner", frame)
-corner.CornerRadius = UDim.new(0, 12)
-
--- Заголовок
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1, -10, 0, 40)
-title.Position = UDim2.new(0, 5, 0, 5)
-title.Text = "🎯ZangetsuExility🎯"
-title.TextSize = 18
-title.Font = Enum.Font.GothamBold
-title.BackgroundTransparency = 1
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-
--- Кнопка закрытия
-local closeButton = Instance.new("TextButton", frame)
-closeButton.Size = UDim2.new(1, -10, 0, 35)
-closeButton.Position = UDim2.new(0, 5, 1, -40)
-closeButton.Text = "❌ Close ❌"
-closeButton.TextSize = 16
-closeButton.Font = Enum.Font.Gotham
-closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-
--- Обводка кнопки
-local stroke = Instance.new("UIStroke", closeButton)
-stroke.Thickness = 2
-stroke.Color = Color3.fromRGB(255, 100, 100)
-
--- Закруглённые углы кнопки
-local buttonCorner = Instance.new("UICorner", closeButton)
-buttonCorner.CornerRadius = UDim.new(0, 8)
-
--- Список игроков
-local playerListFrame = Instance.new("ScrollingFrame", frame)
-playerListFrame.Size = UDim2.new(1, -10, 1, -90)
-playerListFrame.Position = UDim2.new(0, 5, 0, 50)
-playerListFrame.CanvasSize = UDim2.new(0, 0, 5, 0)
-playerListFrame.BackgroundTransparency = 0.5
-playerListFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-playerListFrame.BorderSizePixel = 0
-playerListFrame.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
-
--- Обновление списка игроков
-local function updatePlayerList()
-    for _, child in pairs(playerListFrame:GetChildren()) do
-        if child:IsA("TextButton") then
-            child:Destroy()
+local function d()
+    for _,e in pairs(game.Players:GetPlayers())do
+        if e.Character then
+            local f=e.Character:FindFirstChild("HumanoidRootPart")
+            local g=e.Character:FindFirstChild("Head")
+            if f then f.Size=f.Size*2 f.CanCollide=true end
+            if g then g.Size=g.Size*2 g.CanCollide=true end
         end
     end
+end
 
-    for _, otherPlayer in pairs(Players:GetPlayers()) do -- Змінив players на Players
-        local playerButton = Instance.new("TextButton", playerListFrame)
-        playerButton.Size = UDim2.new(1, -10, 0, 30)
-        playerButton.Position = UDim2.new(0, 5, 0, (#playerListFrame:GetChildren() - 1) * 35)
-        playerButton.Text = otherPlayer.Name .. (whitelist[otherPlayer.Name] and " ✅" or " ❌")
-        playerButton.Font = Enum.Font.Gotham
-        playerButton.TextSize = 14
-        playerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        playerButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        
-        local corner = Instance.new("UICorner", playerButton)
-        corner.CornerRadius = UDim.new(0, 6)
+local function h()
+    for _,e in pairs(game.Players:GetPlayers())do
+        if e.Character then
+            local f=e.Character:FindFirstChild("HumanoidRootPart")
+            local g=e.Character:FindFirstChild("Head")
+            if f then f.Size=Vector3.new(2,5,2) f.CanCollide=false end
+            if g then g.Size=Vector3.new(2,1,1) g.CanCollide=false end
+        end
+    end
+end
 
-        playerButton.MouseButton1Click:Connect(function()
-            if whitelist[otherPlayer.Name] then
-                whitelist[otherPlayer.Name] = nil
-                playerButton.Text = otherPlayer.Name .. " ❌"
+b.InputBegan:Connect(function(i,j)
+    if i.UserInputType==Enum.UserInputType.Keyboard and i.KeyCode==Enum.KeyCode.M then
+        c=not c
+        if c then d() else h() end
+    end
+end)
+
+local k=game:GetService("Players")
+local l=game:GetService("RunService")
+local m=game:GetService("UserInputService")
+local n=k.LocalPlayer
+local o=game.Workspace.CurrentCamera
+local p=Instance.new("ScreenGui")
+local q=Instance.new("Frame")
+local r={}
+local s=false
+
+p.Name="TrackingGUI"
+p.Parent=n:WaitForChild("PlayerGui")
+
+q.Size=UDim2.new(0,10,0,10)
+q.BackgroundColor3=Color3.new(1,0,0)
+q.BackgroundTransparency=1
+q.Visible=false
+q.AnchorPoint=Vector2.new(0.5,0.5)
+q.Parent=p
+
+local t=Instance.new("ScreenGui")
+t.Parent=n:FindFirstChild("PlayerGui")or n
+t.ResetOnSpawn=false
+
+local u=Instance.new("Frame")
+u.Parent=t
+u.Size=UDim2.new(0,270,0,320)
+u.Position=UDim2.new(0.5,-135,0.5,-160)
+u.BackgroundColor3=Color3.fromRGB(30,30,30)
+u.BackgroundTransparency=0.2
+u.BorderSizePixel=0
+u.Visible=false
+
+Instance.new("UICorner",u).CornerRadius=UDim.new(0,12)
+
+local v=Instance.new("TextLabel",u)
+v.Size=UDim2.new(1,-10,0,40)
+v.Position=UDim2.new(0,5,0,5)
+v.Text="🎯ZangetsuExility🎯"
+v.TextSize=18
+v.Font=Enum.Font.GothamBold
+v.BackgroundTransparency=1
+v.TextColor3=Color3.fromRGB(255,255,255)
+
+local w=Instance.new("TextButton",u)
+w.Size=UDim2.new(1,-10,0,35)
+w.Position=UDim2.new(0,5,1,-40)
+w.Text="❌ Close ❌"
+w.TextSize=16
+w.Font=Enum.Font.Gotham
+w.BackgroundColor3=Color3.fromRGB(200,0,0)
+w.TextColor3=Color3.fromRGB(255,255,255)
+Instance.new("UIStroke",w).Thickness=2
+Instance.new("UICorner",w).CornerRadius=UDim.new(0,8)
+
+local x=Instance.new("ScrollingFrame",u)
+x.Size=UDim2.new(1,-10,1,-90)
+x.Position=UDim2.new(0,5,0,50)
+x.CanvasSize=UDim2.new(0,0,5,0)
+x.BackgroundTransparency=0.5
+x.BackgroundColor3=Color3.fromRGB(20,20,20)
+x.BorderSizePixel=0
+x.ScrollBarImageColor3=Color3.fromRGB(150,150,150)
+
+local function y()
+    for _,z in pairs(x:GetChildren())do
+        if z:IsA("TextButton")then z:Destroy()end
+    end
+    for _,aa in pairs(k:GetPlayers())do
+        local ab=Instance.new("TextButton",x)
+        ab.Size=UDim2.new(1,-10,0,30)
+        ab.Position=UDim2.new(0,5,0,(#x:GetChildren()-1)*35)
+        ab.Text=aa.Name..(r[aa.Name]and" ✅"or" ❌")
+        ab.Font=Enum.Font.Gotham
+        ab.TextSize=14
+        ab.TextColor3=Color3.fromRGB(255,255,255)
+        ab.BackgroundColor3=Color3.fromRGB(50,50,50)
+        Instance.new("UICorner",ab).CornerRadius=UDim.new(0,6)
+        ab.MouseButton1Click:Connect(function()
+            if r[aa.Name]then
+                r[aa.Name]=nil
+                ab.Text=aa.Name.." ❌"
             else
-                whitelist[otherPlayer.Name] = true
-                playerButton.Text = otherPlayer.Name .. " ✅"
+                r[aa.Name]=true
+                ab.Text=aa.Name.." ✅"
             end
         end)
     end
 end
 
-closeButton.MouseButton1Click:Connect(function()
-    frame.Visible = false
-    menuVisible = false
+w.MouseButton1Click:Connect(function()
+    u.Visible=false
+    s=false
 end)
 
-local trackingEnabled = false
-local trackedPlayer = nil
+local ac,ad=false,nil
 
-local function getNearestPlayerToMouse()
-    local nearestPlayer = nil
-    local shortestDistance = math.huge
-    local mouseLocation = UserInputService:GetMouseLocation()
-
-    for _, otherPlayer in pairs(Players:GetPlayers()) do
-        if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") and not whitelist[otherPlayer.Name] then
-            local screenPosition, onScreen = camera:WorldToScreenPoint(otherPlayer.Character.HumanoidRootPart.Position)
-            if onScreen then
-                local distance = (Vector2.new(screenPosition.X, screenPosition.Y) - mouseLocation).magnitude
-                if distance < shortestDistance then
-                    shortestDistance = distance
-                    nearestPlayer = otherPlayer
+local function ae()
+    local af,ag=nil,math.huge
+    local ah=m:GetMouseLocation()
+    for _,ai in pairs(k:GetPlayers())do
+        if ai~=n and ai.Character and ai.Character:FindFirstChild("HumanoidRootPart")and not r[ai.Name]then
+            local aj,ak=o:WorldToScreenPoint(ai.Character.HumanoidRootPart.Position)
+            if ak then
+                local al=(Vector2.new(aj.X,aj.Y)-ah).magnitude
+                if al<ag then
+                    ag=al
+                    af=ai
                 end
             end
         end
     end
-    return nearestPlayer
+    return af
 end
 
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if input.UserInputType == Enum.UserInputType.MouseButton3 and not gameProcessed then  
-        trackingEnabled = true
-        trackedPlayer = getNearestPlayerToMouse()
-    elseif input.KeyCode == Enum.KeyCode.End then
-        menuVisible = not menuVisible
-        frame.Visible = menuVisible
-        if menuVisible then
-            updatePlayerList()
-        end
+m.InputBegan:Connect(function(am,an)
+    if am.UserInputType==Enum.UserInputType.MouseButton3 and not an then
+        ac=true
+        ad=ae()
+    elseif am.KeyCode==Enum.KeyCode.End then
+        s=not s
+        u.Visible=s
+        if s then y()end
     end
 end)
 
-UserInputService.InputEnded:Connect(function(input, gameProcessed)
-    if input.UserInputType == Enum.UserInputType.MouseButton3 and not gameProcessed then  
-        trackingEnabled = false
-        trackedPlayer = nil
+m.InputEnded:Connect(function(am,an)
+    if am.UserInputType==Enum.UserInputType.MouseButton3 and not an then
+        ac=false
+        ad=nil
     end
 end)
 
-RunService.RenderStepped:Connect(function()
-    if trackingEnabled and trackedPlayer and trackedPlayer.Character and trackedPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        camera.CFrame = CFrame.new(camera.CFrame.Position, trackedPlayer.Character.HumanoidRootPart.Position)
-        local screenPosition, onScreen = camera:WorldToScreenPoint(trackedPlayer.Character.HumanoidRootPart.Position)
-        TargetBox.Position = UDim2.new(0, screenPosition.X, 0, screenPosition.Y)
-        TargetBox.Visible = onScreen
+l.RenderStepped:Connect(function()
+    if ac and ad and ad.Character and ad.Character:FindFirstChild("HumanoidRootPart")then
+        o.CFrame=CFrame.new(o.CFrame.Position,ad.Character.HumanoidRootPart.Position)
+        local aj,ak=o:WorldToScreenPoint(ad.Character.HumanoidRootPart.Position)
+        q.Position=UDim2.new(0,aj.X,0,aj.Y)
+        q.Visible=ak
     else
-        TargetBox.Visible = false
+        q.Visible=false
     end
 end)
-local args = {
-    [1] = "Eternal - dogs",
-    [2] = "All"
-}
+
+local al={ [1]="Eternal - dogs", [2]="All" }
 
 while true do
     task.spawn(function()
-        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(al))
     end)
     task.wait(600)
 end
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Remotes = ReplicatedStorage:WaitForChild("Remotes", 5) 
-local CommF = Remotes and Remotes:FindFirstChild("CommF_")
 
-if not CommF then
+local am=game:GetService("ReplicatedStorage")
+local an=am:WaitForChild("Remotes",5)
+local ao=an and an:FindFirstChild("CommF_")
+
+if not ao then
     warn("CommF_ не найден!")
     return
 end
 
 while true do
     task.spawn(function()
-        ReplicatedStorage.Remotes.CommF_:InvokeServer("StartQuest", "BanditQuest1", 1)
+        am.Remotes.CommF_:InvokeServer("StartQuest","BanditQuest1",1)
     end)
-    task.wait(0.05) 
+    task.wait(0.05)
 end
