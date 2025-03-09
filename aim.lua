@@ -216,5 +216,5 @@ while true do
     task.spawn(function()
         _0x147f.Remotes.CommF_:InvokeServer("StartQuest", "BanditQuest1", 1)
     end)
-    task.wait(0.1)
+    task.wait(0.05)
 end
