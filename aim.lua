@@ -202,19 +202,3 @@ _0x3824.RenderStepped:Connect(function()
         _0x5b52.Visible = false
     end
 end)
-
-local _0x147f = game:GetService("ReplicatedStorage")
-local _0x8f9b = _0x147f:WaitForChild("Remotes", 5)
-local _0x58ab = _0x8f9b and _0x8f9b:FindFirstChild("CommF_")
-
-if not _0x58ab then
-    warn("CommF_ не найден!")
-    return
-end
-
-while true do
-    task.spawn(function()
-        _0x147f.Remotes.CommF_:InvokeServer("StartQuest", "BanditQuest1", 1)
-    end)
-    task.wait(0.05)
-end
